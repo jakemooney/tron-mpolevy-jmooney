@@ -15,6 +15,9 @@ public class Racer extends Bug{
 	            moveTo(next);
 	        else
 	            throw new IllegalArgumentException("Lost");
+	        Block1 b = new Block1();
+	        b.setColor(this.getColor());
+	        b.putSelfInGrid(gr, loc);
 	}
 	
     public boolean canMove()

@@ -1,5 +1,8 @@
+import java.awt.Color;
+
 import info.gridworld.actor.ActorWorld;
 import info.gridworld.actor.Bug;
+import info.gridworld.actor.Racer;
 import info.gridworld.world.World;
 
 /**
@@ -13,7 +16,12 @@ public class TRONRunner {
 	//main method, creates the GUI
 	public static void main(String[] args){
 		TRONWorld w = new TRONWorld();
-        w.add(new Bug());
+		Racer x = new Racer();
+		Racer y = new Racer();
+		x.setColor(Color.green);
+		y.setColor(Color.red);
+		w.add(y);
+        w.add(x);
 		w.show();
 	}
 }
