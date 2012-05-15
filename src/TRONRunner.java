@@ -3,6 +3,7 @@ import java.awt.Color;
 import info.gridworld.actor.ActorWorld;
 import info.gridworld.actor.Bug;
 import info.gridworld.actor.Racer;
+import info.gridworld.grid.Location;
 import info.gridworld.world.World;
 
 /**
@@ -20,8 +21,10 @@ public class TRONRunner {
 		Racer y = new Racer();
 		x.setColor(Color.green);
 		y.setColor(Color.red);
-		w.add(y);
-        w.add(x);
+		w.add(new Location(9,4), y);
+		w.add(new Location(9,5), x);
 		w.show();
+		w.getFrame().setSize(500,500);
+
 	}
 }
