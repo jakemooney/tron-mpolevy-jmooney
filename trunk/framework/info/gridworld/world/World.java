@@ -75,6 +75,11 @@ public class World<T>
         else
             frame.repaint();
     }
+    
+    //*jake
+    public JFrame getFrame(){
+    	return frame;
+    }
 
     /**
      * Gets the grid managed by this world.
