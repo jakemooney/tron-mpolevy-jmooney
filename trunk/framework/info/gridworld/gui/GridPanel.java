@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -70,7 +71,7 @@ public class GridPanel extends JPanel implements Scrollable,
     private int numRows, numCols, originRow, originCol;
     private int cellSize; // the size of each cell, EXCLUDING the gridlines
     private boolean toolTipsEnabled;
-    private Color backgroundColor = Color.WHITE;
+    private Color backgroundColor = Color.black; //*max
     private ResourceBundle resources;
     private DisplayMap displayMap;
     private Location currentLocation;
@@ -102,7 +103,10 @@ public class GridPanel extends JPanel implements Scrollable,
             return;
 
         Insets insets = getInsets();
-        g2.setColor(backgroundColor); 
+        g2.setColor(backgroundColor);
+
+        GradientPaint g3 = new GradientPaint(0, 0, new Color(92, 118, 124), 0, numCols * (cellSize + 1) , Color.black); //*max
+        g2.setPaint(g3); //*max
         g2.fillRect(insets.left, insets.top, numCols * (cellSize + 1) + 1, numRows
                 * (cellSize + 1) + 1);
 
@@ -148,6 +152,8 @@ public class GridPanel extends JPanel implements Scrollable,
      */
     private void drawGridlines(Graphics2D g2)
     {
+    	//*max
+    	/**
         Rectangle curClip = g2.getClip().getBounds();
         int top = getInsets().top, left = getInsets().left;
 
@@ -170,7 +176,7 @@ public class GridPanel extends JPanel implements Scrollable,
                     g2.fillRect(x + 1, y + 1, cellSize, cellSize);
             }
 
-        g2.setColor(Color.BLACK);
+        g2.setColor(Color.lightGray); //*max
         for (int y = miny; y <= maxy; y += cellSize + 1)
             // draw horizontal lines
             g2.drawLine(minx, y, maxx, y);
@@ -178,6 +184,7 @@ public class GridPanel extends JPanel implements Scrollable,
         for (int x = minx; x <= maxx; x += cellSize + 1)
             // draw vertical lines
             g2.drawLine(x, miny, x, maxy);
+        */
     }
 
     /**

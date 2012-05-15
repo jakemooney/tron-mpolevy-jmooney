@@ -12,7 +12,7 @@ public class TRONRunner {
 	
 	//main method, creates the GUI
 	public static void main(String[] args){
-		ActorWorld w = new ActorWorld();
+		TRONWorld w = new TRONWorld();
         w.add(new Bug());
 		w.show();
 	}
