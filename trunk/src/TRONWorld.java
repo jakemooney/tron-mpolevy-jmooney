@@ -16,7 +16,7 @@ public class TRONWorld extends ActorWorld{
 
 	public TRONWorld(){
 		super();
-		super.setGrid(new BoundedGrid(11, 10)); //the first dimension should be odd, the second should be even
+		super.setGrid(new BoundedGrid(101, 150)); //the first dimension should be odd, the second should be even
 		racer1 = new Racer();
 		racer1.setColor(Color.green);
 		racer2 = new Racer();
@@ -57,5 +57,10 @@ public class TRONWorld extends ActorWorld{
 			racer2.setDirection(Location.WEST);
 		}
 		return true;
+	}
+	
+	public void show(){
+		super.show();
+		super.getFrame().setSize(1000, 800);
 	}
 }
