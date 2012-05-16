@@ -17,14 +17,6 @@ public class TRONRunner {
 	//main method, creates the GUI
 	public static void main(String[] args){
 		TRONWorld w = new TRONWorld();
-		Racer x = new Racer();
-		Racer y = new Racer();
-		x.setColor(Color.green);
-		y.setColor(Color.red);
-		w.add(new Location(9,4), y);
-		w.add(new Location(9,5), x);
 		w.show();
-		w.getFrame().setSize(500,500);
-
 	}
 }
