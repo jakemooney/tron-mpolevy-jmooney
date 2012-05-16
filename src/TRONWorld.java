@@ -63,4 +63,12 @@ public class TRONWorld extends ActorWorld{
 		super.show();
 		super.getFrame().setSize(975, 760);
 	}
+	
+	public Racer getRacer1(){
+		return racer1;
+	}
+	
+	public Racer getRacer2(){
+		return racer2;
+	}
 }
