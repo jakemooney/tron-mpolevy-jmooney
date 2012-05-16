@@ -1,5 +1,7 @@
 package info.gridworld.actor;
 
+import java.awt.Color;
+
 import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 
@@ -19,6 +21,7 @@ public class Racer extends Bug{
 	        if (gr.isValid(next))
 	            moveTo(next);
 	        else{
+	        	this.setColor(Color.white);
 	        	hasLost = true;
 	           //throw new IllegalArgumentException("Lost");
 	        }
@@ -44,10 +47,12 @@ public class Racer extends Bug{
     
     public void act()
     {
-        if (canMove()){
+    	//this.setColor(new Color((int)(Math.random()*255), (int)(Math.random()*255), (int)(Math.random()*255)));
+    	if (canMove()){
             move();
         }
         else{
+        	this.setColor(Color.white);
         	hasLost = true;
            // throw new IllegalArgumentException("Lost");
         }
