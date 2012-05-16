@@ -4,6 +4,11 @@ import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 
 public class Racer extends Bug{
+	private boolean hasLost;
+	
+	public Racer(){
+		hasLost = false;
+	}
 
 	public void move(){
 		  Grid<Actor> gr = getGrid();
@@ -13,8 +18,10 @@ public class Racer extends Bug{
 	        Location next = loc.getAdjacentLocation(getDirection());
 	        if (gr.isValid(next))
 	            moveTo(next);
-	        else
-	            throw new IllegalArgumentException("Lost");
+	        else{
+	        	hasLost = true;
+	           //throw new IllegalArgumentException("Lost");
+	        }
 	        Block1 b = new Block1();
 	        b.setColor(this.getColor());
 	        b.putSelfInGrid(gr, loc);
@@ -41,7 +48,8 @@ public class Racer extends Bug{
             move();
         }
         else{
-            throw new IllegalArgumentException("Lost");
+        	hasLost = true;
+           // throw new IllegalArgumentException("Lost");
         }
     }
 }

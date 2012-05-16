@@ -32,28 +32,28 @@ public class TRONWorld extends ActorWorld{
 	}
 
 	public boolean keyPressed(String description, Location loc){
-		if (description.equals("W")){
+		if (description.equals("W") && racer1.getDirection()!= Location.SOUTH){
 			racer1.setDirection(Location.NORTH);
 		}
-		if (description.equals("D")){
+		if (description.equals("D")&& racer1.getDirection()!= Location.WEST){
 			racer1.setDirection(Location.EAST);
 		}
-		if (description.equals("S")){
+		if (description.equals("S")&& racer1.getDirection()!= Location.NORTH){
 			racer1.setDirection(Location.SOUTH);
 		}
-		if (description.equals("A")){
+		if (description.equals("A")&& racer1.getDirection()!= Location.EAST){
 			racer1.setDirection(Location.WEST);
 		}
-		if (description.equals("UP")){
+		if (description.equals("UP")&& racer2.getDirection()!= Location.SOUTH){
 			racer2.setDirection(Location.NORTH);
 		}
-		if (description.equals("RIGHT")){
+		if (description.equals("RIGHT")&& racer2.getDirection()!= Location.WEST){
 			racer2.setDirection(Location.EAST);
 		}
-		if (description.equals("DOWN")){
+		if (description.equals("DOWN")&& racer2.getDirection()!= Location.NORTH){
 			racer2.setDirection(Location.SOUTH);
 		}
-		if (description.equals("LEFT")){
+		if (description.equals("LEFT")&& racer2.getDirection()!= Location.EAST){
 			racer2.setDirection(Location.WEST);
 		}
 		return true;
@@ -61,6 +61,6 @@ public class TRONWorld extends ActorWorld{
 	
 	public void show(){
 		super.show();
-		super.getFrame().setSize(1000, 800);
+		super.getFrame().setSize(975, 760);
 	}
 }
