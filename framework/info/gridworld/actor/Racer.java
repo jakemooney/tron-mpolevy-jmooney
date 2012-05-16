@@ -52,4 +52,7 @@ public class Racer extends Bug{
            // throw new IllegalArgumentException("Lost");
         }
     }
+    public boolean hasLost(){
+    	return hasLost();
+    }
 }
