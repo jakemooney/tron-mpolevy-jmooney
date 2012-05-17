@@ -52,12 +52,10 @@ public class Racer extends Bug{
             move();
         }
         else{
-        	this.setColor(Color.white);
         	hasLost = true;
-           // throw new IllegalArgumentException("Lost");
         }
     }
     public boolean hasLost(){
-    	return hasLost();
+    	return hasLost;
     }
 }
