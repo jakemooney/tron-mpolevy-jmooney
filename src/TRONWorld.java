@@ -1,6 +1,9 @@
 import java.awt.Color;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 import info.gridworld.actor.Actor;
 import info.gridworld.actor.ActorWorld;
 import info.gridworld.actor.Racer;
@@ -12,6 +15,7 @@ import info.gridworld.gui.WorldFrame;
 
 public class TRONWorld extends ActorWorld{
 
+	private int score1, score2;
 	private Racer racer1, racer2;
 
 	public TRONWorld(){
@@ -21,8 +25,12 @@ public class TRONWorld extends ActorWorld{
 		racer1.setColor(Color.green);
 		racer2 = new Racer();
 		racer2.setColor(Color.red);
-		
-		//adds racer1 to the middle-left, racer2 to the middle-right
+		score1 = 0;
+		score2 = 0;
+	}
+	
+	//adds racer1 to the middle-left, racer2 to the middle-right
+	private void placeRacers(){
 		int cols = super.getGrid().getNumCols();
 		int rows = super.getGrid().getNumRows();
 		Location racer1Location = new Location(rows / 2 - 1, cols / 4);
@@ -56,6 +64,10 @@ public class TRONWorld extends ActorWorld{
 		if (description.equals("LEFT")&& racer2.getDirection()!= Location.EAST){
 			racer2.setDirection(Location.WEST);
 		}
+		if (description.equals("SPACE")){
+			placeRacers();
+			((WorldFrame) super.getFrame()).run();
+		}
 		return true;
 	}
 	
@@ -70,5 +82,23 @@ public class TRONWorld extends ActorWorld{
 	
 	public Racer getRacer2(){
 		return racer2;
+	}
+	
+	public void step(){
+		super.step();
+		if (racer1.hasLost()){
+			score2++;
+			((WorldFrame) super.getFrame()).stop();
+        	ImageIcon z = new ImageIcon(super.getFrame().getClass().getResource("GridWorld.png"));
+    		JOptionPane.showMessageDialog(getFrame(), "Player 2 wins. Press spacebar to continue.", "Loser!", 2, z);
+    		return;
+		}
+		if (racer2.hasLost()){
+			score1++;
+			((WorldFrame) super.getFrame()).stop();
+        	ImageIcon z = new ImageIcon(super.getFrame().getClass().getResource("GridWorld.png"));
+    		JOptionPane.showMessageDialog(getFrame(), "Player 1 wins. Press spacebar to continue.", "Loser!", 2, z);
+			return;
+		}
 	}
 }
