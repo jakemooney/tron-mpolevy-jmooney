@@ -43,7 +43,7 @@ public class TRONWorld extends ActorWorld{
 		super.add(racer2Location, racer2);
 	}
 	
-	private void reset(){
+	public void reset(){
 		racer1.removeSelfFromGrid();
 		racer2.removeSelfFromGrid();
 		super.setGrid(new BoundedGrid(super.getGrid().getNumRows(), super.getGrid().getNumCols()));
