@@ -605,4 +605,16 @@ public class WorldFrame<T> extends JFrame
             }
         }
     }
+    
+    //*max
+    //method added to stop the gameplay from the TRONWorld
+    public void stop(){
+    	control.stop();
+    }
+    
+    //*max
+    //method added to start the gameplay from the TRONWorld
+    public void run(){
+    	control.run();
+    }
 }
