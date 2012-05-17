@@ -25,6 +25,7 @@ public class TRONWorld extends ActorWorld{
 		racer1.setColor(Color.green);
 		racer2 = new Racer();
 		racer2.setColor(Color.red);
+		placeRacers();
 		score1 = 0;
 		score2 = 0;
 	}
