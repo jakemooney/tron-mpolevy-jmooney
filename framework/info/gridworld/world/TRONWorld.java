@@ -1,3 +1,4 @@
+package info.gridworld.world;
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -17,6 +18,7 @@ public class TRONWorld extends ActorWorld{
 
 	private int score1, score2;
 	private Racer racer1, racer2;
+	private boolean isPaused;
 
 	public TRONWorld(){
 		super();
@@ -28,6 +30,7 @@ public class TRONWorld extends ActorWorld{
 		placeRacers();
 		score1 = 0;
 		score2 = 0;
+		isPaused = false;
 	}
 	
 	//adds racer1 to the middle-left, racer2 to the middle-right
@@ -38,6 +41,13 @@ public class TRONWorld extends ActorWorld{
 		super.add(racer1Location, racer1);
 		Location racer2Location = new Location(rows / 2 - 1, cols * 3 / 4);
 		super.add(racer2Location, racer2);
+	}
+	
+	private void reset(){
+		racer1.removeSelfFromGrid();
+		racer2.removeSelfFromGrid();
+		super.setGrid(new BoundedGrid(super.getGrid().getNumRows(), super.getGrid().getNumCols()));
+		placeRacers();
 	}
 
 	public boolean keyPressed(String description, Location loc){
@@ -66,8 +76,9 @@ public class TRONWorld extends ActorWorld{
 			racer2.setDirection(Location.WEST);
 		}
 		if (description.equals("SPACE")){
-			placeRacers();
-			((WorldFrame) super.getFrame()).run();
+			WorldFrame f = (WorldFrame) super.getFrame();
+			if (isPaused);
+				
 		}
 		return true;
 	}
@@ -90,15 +101,17 @@ public class TRONWorld extends ActorWorld{
 		if (racer1.hasLost()){
 			score2++;
 			((WorldFrame) super.getFrame()).stop();
-        	ImageIcon z = new ImageIcon(super.getFrame().getClass().getResource("GridWorld.png"));
+        	ImageIcon z = new ImageIcon(super.getFrame().getClass().getResource("TRON.gif"));
     		JOptionPane.showMessageDialog(getFrame(), "Player 2 wins. Press spacebar to continue.", "Loser!", 2, z);
+    		reset();
     		return;
 		}
 		if (racer2.hasLost()){
 			score1++;
 			((WorldFrame) super.getFrame()).stop();
-        	ImageIcon z = new ImageIcon(super.getFrame().getClass().getResource("GridWorld.png"));
+        	ImageIcon z = new ImageIcon(super.getFrame().getClass().getResource("TRON.gif"));
     		JOptionPane.showMessageDialog(getFrame(), "Player 1 wins. Press spacebar to continue.", "Loser!", 2, z);
+    		reset();
 			return;
 		}
 	}
