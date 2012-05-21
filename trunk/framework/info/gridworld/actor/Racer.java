@@ -6,10 +6,17 @@ import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 
 public class Racer extends Bug{
+
 	private boolean hasLost;
 	
-	public Racer(){
+	public Racer(int direction, Color c){
 		hasLost = false;
+		super.setDirection(direction);
+		super.setColor(c);
+	}
+	
+	public void setLost(boolean b){
+		hasLost = b;
 	}
 
 	public void move(){

@@ -19,14 +19,14 @@ public class TRONWorld extends ActorWorld{
 	private int score1, score2;
 	private Racer racer1, racer2;
 	private boolean isPaused;
+	private final Color color1 = new Color(51, 204, 153, 0);
+	private final Color color2 = new Color(255, 102, 255, 0);
 
 	public TRONWorld(){
 		super();
-		super.setGrid(new BoundedGrid(101, 150)); //the first dimension should be odd, the second should be even
-		racer1 = new Racer();
-		racer1.setColor(Color.green);
-		racer2 = new Racer();
-		racer2.setColor(Color.red);
+		super.setGrid(new BoundedGrid(100, 150)); //both should be even
+		racer1 = new Racer(Location.EAST, color1);
+		racer2 = new Racer(Location.WEST, color2);
 		placeRacers();
 		score1 = 0;
 		score2 = 0;
@@ -38,16 +38,25 @@ public class TRONWorld extends ActorWorld{
 		int cols = super.getGrid().getNumCols();
 		int rows = super.getGrid().getNumRows();
 		Location racer1Location = new Location(rows / 2 - 1, cols / 4);
-		super.add(racer1Location, racer1);
+		racer1.putSelfInGrid(super.getGrid(), racer1Location);
 		Location racer2Location = new Location(rows / 2 - 1, cols * 3 / 4);
-		super.add(racer2Location, racer2);
+		racer2.putSelfInGrid(super.getGrid(), racer2Location);
 	}
 	
 	public void reset(){
-		racer1.removeSelfFromGrid();
-		racer2.removeSelfFromGrid();
-		super.setGrid(new BoundedGrid(super.getGrid().getNumRows(), super.getGrid().getNumCols()));
+		racer1 = new Racer(Location.EAST, color1);
+		racer2 = new Racer(Location.WEST, color2);
+		removeAllActors();
 		placeRacers();
+	}
+
+	private void removeAllActors() {
+		Grid g = super.getGrid();
+		ArrayList<Location> occ = g.getOccupiedLocations();
+		for (Location l : occ){
+			Actor a = (Actor) g.get(l);
+			a.removeSelfFromGrid();
+		}
 	}
 
 	public boolean keyPressed(String description, Location loc){
@@ -77,8 +86,10 @@ public class TRONWorld extends ActorWorld{
 		}
 		if (description.equals("SPACE")){
 			WorldFrame f = (WorldFrame) super.getFrame();
-			if (isPaused);
-				
+			if (isPaused)
+				f.run();
+			else
+				f.stop();
 		}
 		return true;
 	}
@@ -98,19 +109,29 @@ public class TRONWorld extends ActorWorld{
 	
 	public void step(){
 		super.step();
+		if (racer1.hasLost() && racer2.hasLost()){
+			((WorldFrame) super.getFrame()).stop();
+			isPaused = true;
+        	ImageIcon z = new ImageIcon(super.getFrame().getClass().getResource("TRON.gif"));
+    		JOptionPane.showMessageDialog(getFrame(), "Tie!", "Alert!", 2, z);
+    		reset();
+    		return;
+		}
 		if (racer1.hasLost()){
 			score2++;
 			((WorldFrame) super.getFrame()).stop();
+			isPaused = true;
         	ImageIcon z = new ImageIcon(super.getFrame().getClass().getResource("TRON.gif"));
-    		JOptionPane.showMessageDialog(getFrame(), "Player 2 wins. Press spacebar to continue.", "Loser!", 2, z);
+    		JOptionPane.showMessageDialog(getFrame(), "Player 2 wins!", "Alert!", 2, z);
     		reset();
     		return;
 		}
 		if (racer2.hasLost()){
 			score1++;
 			((WorldFrame) super.getFrame()).stop();
+			isPaused = true;
         	ImageIcon z = new ImageIcon(super.getFrame().getClass().getResource("TRON.gif"));
-    		JOptionPane.showMessageDialog(getFrame(), "Player 1 wins. Press spacebar to continue.", "Loser!", 2, z);
+    		JOptionPane.showMessageDialog(getFrame(), "Player 1 wins!", "Alert!", 2, z);
     		reset();
 			return;
 		}
