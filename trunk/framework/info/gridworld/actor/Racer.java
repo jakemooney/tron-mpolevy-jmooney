@@ -6,11 +6,14 @@ import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 
 public class Racer extends Bug{
-
-	private boolean hasLost;
+	private boolean hasLost, boost;
+	private int boostcount, boostlimit;
 	
 	public Racer(int direction, Color c){
 		hasLost = false;
+		boost = false;
+		boostcount = 0;
+		boostlimit = 0;
 		super.setDirection(direction);
 		super.setColor(c);
 	}
@@ -54,9 +57,21 @@ public class Racer extends Bug{
     
     public void act()
     {
-    	//this.setColor(new Color((int)(Math.random()*255), (int)(Math.random()*255), (int)(Math.random()*255)));
     	if (canMove()){
             move();
+            if (boost && boostcount<10){
+            	if (canMove()){
+                    move();
+            	 }
+                else{
+                	hasLost = true;
+                }
+            	boostcount++;
+            }
+            if (boostcount == 10){
+            	boost = false;
+            	boostcount = 0;
+            }
         }
         else{
         	hasLost = true;
@@ -64,5 +79,17 @@ public class Racer extends Bug{
     }
     public boolean hasLost(){
     	return hasLost;
+    }
+    public void Boost(boolean boost){
+    	this.boost = boost;
+    	if (boost = true){
+    		boostlimit++;
+    	}
+    	if (boostlimit >2){
+    		boost = false;
+    	}
+    }
+    public void resetBoostLimit(){
+    	boostlimit = 0;
     }
 }

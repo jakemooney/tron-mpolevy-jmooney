@@ -91,6 +91,12 @@ public class TRONWorld extends ActorWorld{
 			else
 				f.stop();
 		}
+		if (description.equals("F")){
+			racer1.Boost(true);
+		}
+		if (description.equals("L")){
+			racer2.Boost(true);
+		}
 		return true;
 	}
 	

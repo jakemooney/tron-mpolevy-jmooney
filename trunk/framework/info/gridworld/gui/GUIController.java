@@ -19,6 +19,7 @@
 package info.gridworld.gui;
 
 import info.gridworld.grid.*;
+import info.gridworld.world.TRONWorld;
 import info.gridworld.world.World;
 
 import java.awt.Dimension;
@@ -249,7 +250,10 @@ public class GUIController<T>
         {
             public void actionPerformed(ActionEvent e)
             {
-                step();
+            	//step();
+            	//*jake
+            	stop();
+                ((TRONWorld) parentFrame.getWorld()).reset();
             }
         });
         runButton.addActionListener(new ActionListener()
