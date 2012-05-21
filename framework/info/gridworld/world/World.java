@@ -46,6 +46,11 @@ public class World<T>
 
     private static final int DEFAULT_ROWS = 10;
     private static final int DEFAULT_COLS = 10;
+    
+    //*max
+    public void setFrame(JFrame f){
+    	this.frame = f;
+    }
 
     public World()
     {
