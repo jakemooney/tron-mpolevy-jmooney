@@ -6,14 +6,14 @@ import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 
 public class Racer extends Bug{
+	
 	private boolean hasLost, boost;
-	private int boostcount, boostlimit;
+	private int boostsLeft, boostSteps;
 	
 	public Racer(int direction, Color c){
 		hasLost = false;
 		boost = false;
-		boostcount = 0;
-		boostlimit = 0;
+		boostsLeft = 3;
 		super.setDirection(direction);
 		super.setColor(c);
 	}
@@ -42,54 +42,95 @@ public class Racer extends Bug{
 	
     public boolean canMove()
     {
-        Grid<Actor> gr = getGrid();
-        if (gr == null)
-            return false;
-        Location loc = getLocation();
-        Location next = loc.getAdjacentLocation(getDirection());
-        if (!gr.isValid(next))
-            return false;
-        Actor neighbor = gr.get(next);
-        return (neighbor == null);
-        // ok to move into empty location
-        // not ok to move onto any other actor or wall
-    }
-    
-    public void act()
-    {
-    	if (canMove()){
-            move();
-            if (boost && boostcount<10){
-            	if (canMove()){
-                    move();
-            	 }
-                else{
-                	hasLost = true;
-                }
-            	boostcount++;
-            }
-            if (boostcount == 10){
-            	boost = false;
-            	boostcount = 0;
-            }
+    	int direction = super.getDirection();
+    	Location current = super.getLocation();
+    	Location next1 = current.getAdjacentLocation(direction);
+    	Location next2 = next1.getAdjacentLocation(direction);
+    	
+        if (boost){
+        	if (super.getGrid().isValid(next1) == false){
+        		return false;
+        	}
+        	else if (super.getGrid().isValid(next2) == false){
+        		return false;
+        	}
+        	else if (super.getGrid().get(next1) == null && super.getGrid().get(next2) == null)
+        		return true;
+        	else if (super.getGrid().get(next1) instanceof Racer){
+        		Racer racer2 = (Racer) super.getGrid().get(next1);
+        		racer2.setLost(true);
+        		return false;
+        	}
+        	else if (super.getGrid().get(next2) instanceof Racer && super.getGrid().get(next1) == null){
+        		Racer racer2 = (Racer) super.getGrid().get(next2);
+        		racer2.setLost(true);
+        		return false;
+        	}
+        	else
+        		return false;
         }
         else{
-        	hasLost = true;
+        	if (super.getGrid().isValid(next1) == false){
+        		return false;
+        	}
+        	else if (super.getGrid().get(next1) instanceof Racer){
+        		Racer racer2 = (Racer) super.getGrid().get(next1);
+        		racer2.setLost(true);
+        		return false;
+        	}
+        	else{
+        		return super.canMove();
+        	}
         }
     }
+
+    public void act()
+    {
+    	if (boost){
+    		if (canMove()){
+    			move();
+    			if (canMove())
+    				move();
+    			else{
+    				hasLost = true;
+    				return;
+    			}
+    		}
+    		else{
+    			hasLost = true;
+    			return;
+    		}
+    		boostSteps += 2;
+    		if (boostSteps >= 10){
+    			boost = false;
+    			boostSteps = 0;
+    		}
+    	}
+    	else{
+    		if (canMove())
+    			move();
+    		else
+    			hasLost = true;
+    	}
+    }
+    
     public boolean hasLost(){
     	return hasLost;
     }
-    public void Boost(boolean boost){
-    	this.boost = boost;
-    	if (boost = true){
-    		boostlimit++;
-    	}
-    	if (boostlimit >2){
-    		this.boost = false;
-    	}
+    
+    public void boost(){
+    	if (boostsLeft == 0)
+    		return;
+    	boost = true;
+    	boostsLeft--;
+    	boostSteps = 0;
     }
-    public void resetBoostLimit(){
-    	boostlimit = 0;
+    
+    public int getBoostsLeft(){
+    	return boostsLeft;
+    }
+    
+    public boolean isBoosting(){
+    	return boost;
     }
 }

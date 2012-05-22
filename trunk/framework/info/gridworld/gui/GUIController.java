@@ -47,6 +47,23 @@ import javax.swing.*;
 
 public class GUIController<T>
 {
+	
+	public void setScore1(int score){
+		score1.setText("P1 Score: " + score);
+	}
+	
+	public void setScore2(int score){
+		score2.setText("P2 Score: " + score);
+	}
+	
+	public void setBoost1(int boost){
+		boost1.setText("P1 Boosts: " + boost);
+	}
+	
+	public void setBoost2(int boost){
+		boost2.setText("P2 Boosts: " + boost);
+	}
+	
     public static final int INDEFINITE = 0, FIXED_STEPS = 1, PROMPT_STEPS = 2;
 
     private static final int MIN_DELAY_MSECS = 10, MAX_DELAY_MSECS = 1000;
@@ -55,7 +72,8 @@ public class GUIController<T>
     private static final int INITIAL_DELAY = 35;   //*jake
 
     private Timer timer;
-    private JButton stepButton, runButton, stopButton;
+    //private JButton stepButton, runButton, stopButton;
+    private JLabel score1, score2, boost1, boost2;
     private JComponent controlPanel;
     private GridPanel display;
     private WorldFrame<T> parentFrame;
@@ -166,10 +184,10 @@ public class GUIController<T>
         display.setToolTipsEnabled(false); // hide tool tips while running
         
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        parentFrame.setRunMenuItemsEnabled(true); ////~~~~~~~~~changed to true
-        stopButton.setEnabled(true);
-        stepButton.setEnabled(false);
-        runButton.setEnabled(false);
+        //parentFrame.setRunMenuItemsEnabled(true); ////~~~~~~~~~changed to true
+        //stopButton.setEnabled(true);
+        //stepButton.setEnabled(false);
+        //runButton.setEnabled(false);
         numStepsSoFar = 0;
         timer.start();
         
@@ -182,12 +200,12 @@ public class GUIController<T>
      */
     public void stop()
     {
-        display.setToolTipsEnabled(true);
-        parentFrame.setRunMenuItemsEnabled(true);
+        display.setToolTipsEnabled(false); //*max
+        //parentFrame.setRunMenuItemsEnabled(true);
         timer.stop();
-        stopButton.setEnabled(false);
-        runButton.setEnabled(true);
-        stepButton.setEnabled(true);
+        //stopButton.setEnabled(false);
+        //runButton.setEnabled(true);
+        //stepButton.setEnabled(true);
         running = false;
     }
 
@@ -203,80 +221,26 @@ public class GUIController<T>
     private void makeControls()
     {
         controlPanel = new JPanel();
-        stepButton = new JButton(resources.getString("button.gui.step"));
-        runButton = new JButton(resources.getString("button.gui.run"));
-        stopButton = new JButton(resources.getString("button.gui.stop"));
-        
+        boost1 = new JLabel("P1 Boosts: 3");
+        boost1.setSize(100, 100);
+        boost2 = new JLabel("P2 Boosts: 3");
+        score1 = new JLabel("P1 Score: 0");
+        score2 = new JLabel("P2 Score: 0");
+
         controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
         controlPanel.setBorder(BorderFactory.createEtchedBorder());
         
-        Dimension spacer = new Dimension(5, stepButton.getPreferredSize().height + 10);
+        Dimension spacer = new Dimension(125, boost1.getPreferredSize().height + 10);
         
         controlPanel.add(Box.createRigidArea(spacer));
 
-        controlPanel.add(stepButton);
+        controlPanel.add(boost1);
         controlPanel.add(Box.createRigidArea(spacer));
-        controlPanel.add(runButton);
+        controlPanel.add(score1);
         controlPanel.add(Box.createRigidArea(spacer));
-        controlPanel.add(stopButton);
-        runButton.setEnabled(false);
-        stepButton.setEnabled(false);
-        stopButton.setEnabled(false);
-
+        controlPanel.add(score2);
         controlPanel.add(Box.createRigidArea(spacer));
-        controlPanel.add(new JLabel(resources.getString("slider.gui.slow")));
-        JSlider speedSlider = new JSlider(MIN_DELAY_MSECS, MAX_DELAY_MSECS,
-                INITIAL_DELAY);
-        speedSlider.setInverted(true);
-        speedSlider.setPreferredSize(new Dimension(100, speedSlider
-                .getPreferredSize().height));
-        speedSlider.setMaximumSize(speedSlider.getPreferredSize());
-
-        // remove control PAGE_UP, PAGE_DOWN from slider--they should be used
-        // for zoom
-        InputMap map = speedSlider.getInputMap();
-        while (map != null)
-        {
-            map.remove(KeyStroke.getKeyStroke("control PAGE_UP"));
-            map.remove(KeyStroke.getKeyStroke("control PAGE_DOWN"));
-            map = map.getParent();
-        }
-
-        controlPanel.add(speedSlider);
-        controlPanel.add(new JLabel(resources.getString("slider.gui.fast")));
-        controlPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-
-        stepButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-            	//step();
-            	//*jake
-            	stop();
-                ((TRONWorld) parentFrame.getWorld()).reset();
-            }
-        });
-        runButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                run();
-            }
-        });
-        stopButton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-                stop();
-            }
-        });
-        speedSlider.addChangeListener(new ChangeListener()
-        {
-            public void stateChanged(ChangeEvent evt)
-            {
-                timer.setDelay(((JSlider) evt.getSource()).getValue());
-            }
-        });
+        controlPanel.add(boost2);
     }
 
     /**
@@ -293,11 +257,13 @@ public class GUIController<T>
      */
     private void locationClicked()
     {
+    	
         World<T> world = parentFrame.getWorld();
         Location loc = display.getCurrentLocation();
         if (loc != null && !world.locationClicked(loc))
             editLocation();
         parentFrame.repaint();
+        
     }
 
     /**
@@ -306,6 +272,7 @@ public class GUIController<T>
      */
     public void editLocation()
     {
+    	
         World<T> world = parentFrame.getWorld();
 
         Location loc = display.getCurrentLocation();
@@ -331,6 +298,7 @@ public class GUIController<T>
             }
         }
         parentFrame.repaint();
+        
     }
 
     /**
@@ -339,6 +307,7 @@ public class GUIController<T>
      */
     public void deleteLocation()
     {
+    	/**
         World<T> world = parentFrame.getWorld();
         Location loc = display.getCurrentLocation();
         if (loc != null)
@@ -346,5 +315,6 @@ public class GUIController<T>
             world.remove(loc);
             parentFrame.repaint();
         }
+        */
     }
 }

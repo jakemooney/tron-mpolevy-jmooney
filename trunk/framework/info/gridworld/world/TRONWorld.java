@@ -1,17 +1,15 @@
 package info.gridworld.world;
 import java.awt.Color;
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
 import info.gridworld.actor.Actor;
 import info.gridworld.actor.ActorWorld;
+import info.gridworld.world.AePlayWave;
 import info.gridworld.actor.Racer;
 import info.gridworld.grid.BoundedGrid;
 import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
-import info.gridworld.gui.GUIController;
 import info.gridworld.gui.WorldFrame;
 
 public class TRONWorld extends ActorWorld{
@@ -22,6 +20,8 @@ public class TRONWorld extends ActorWorld{
 	private final Color color1 = new Color(51, 204, 153, 0);
 	private final Color color2 = new Color(255, 102, 255, 0);
 
+	//http://soundbible.com/994-Mirror-Shattering.html
+	
 	public TRONWorld(){
 		super();
 		super.setGrid(new BoundedGrid(100, 150)); //both should be even
@@ -30,7 +30,7 @@ public class TRONWorld extends ActorWorld{
 		placeRacers();
 		score1 = 0;
 		score2 = 0;
-		isPaused = false;
+		isPaused = true;
 	}
 	
 	//adds racer1 to the middle-left, racer2 to the middle-right
@@ -48,6 +48,8 @@ public class TRONWorld extends ActorWorld{
 		racer2 = new Racer(Location.WEST, color2);
 		removeAllActors();
 		placeRacers();
+		((WorldFrame) super.getFrame()).setBoost1(3);
+		((WorldFrame) super.getFrame()).setBoost2(3);
 	}
 
 	private void removeAllActors() {
@@ -90,12 +92,15 @@ public class TRONWorld extends ActorWorld{
 				f.run();
 			else
 				f.stop();
+			isPaused = !isPaused;
 		}
-		if (description.equals("F")){
-			racer1.Boost(true);
+		if (description.equals("F") && racer1.isBoosting() == false && isPaused == false){
+			racer1.boost();
+			((WorldFrame) super.getFrame()).setBoost1(racer1.getBoostsLeft());
 		}
-		if (description.equals("L")){
-			racer2.Boost(true);
+		if (description.equals("L") && racer2.isBoosting() == false && isPaused == false){
+			racer2.boost();
+			((WorldFrame) super.getFrame()).setBoost2(racer2.getBoostsLeft());
 		}
 		return true;
 	}
@@ -115,6 +120,8 @@ public class TRONWorld extends ActorWorld{
 	
 	public void step(){
 		super.step();
+		if (racer1.hasLost() || racer2.hasLost())
+			new AePlayWave("crash.wav").start();
 		if (racer1.hasLost() && racer2.hasLost()){
 			((WorldFrame) super.getFrame()).stop();
 			isPaused = true;
@@ -127,6 +134,7 @@ public class TRONWorld extends ActorWorld{
 			score2++;
 			((WorldFrame) super.getFrame()).stop();
 			isPaused = true;
+			((WorldFrame) super.getFrame()).setScore2(score2);
         	ImageIcon z = new ImageIcon(super.getFrame().getClass().getResource("TRON.gif"));
     		JOptionPane.showMessageDialog(getFrame(), "Player 2 wins!", "Alert!", 2, z);
     		reset();
@@ -136,6 +144,7 @@ public class TRONWorld extends ActorWorld{
 			score1++;
 			((WorldFrame) super.getFrame()).stop();
 			isPaused = true;
+			((WorldFrame) super.getFrame()).setScore1(score1);
         	ImageIcon z = new ImageIcon(super.getFrame().getClass().getResource("TRON.gif"));
     		JOptionPane.showMessageDialog(getFrame(), "Player 1 wins!", "Alert!", 2, z);
     		reset();
