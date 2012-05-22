@@ -86,7 +86,7 @@ public class Racer extends Bug{
     		boostlimit++;
     	}
     	if (boostlimit >2){
-    		boost = false;
+    		this.boost = false;
     	}
     }
     public void resetBoostLimit(){
