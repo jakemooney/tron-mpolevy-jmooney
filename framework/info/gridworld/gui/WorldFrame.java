@@ -74,6 +74,23 @@ import java.io.StringWriter;
  */
 public class WorldFrame<T> extends JFrame
 {
+	
+	public void setScore1(int score){
+		control.setScore1(score);
+	}
+	
+	public void setScore2(int score){
+		control.setScore2(score);
+	}
+	
+	public void setBoost1(int boost){
+		control.setBoost1(boost);
+	}
+	
+	public void setBoost2(int boost){
+		control.setBoost2(boost);
+	}
+	
     private GUIController<T> control;
     private GridPanel display;
     //private JTextArea messageArea; //*max
@@ -128,7 +145,7 @@ public class WorldFrame<T> extends JFrame
         ImageIcon appIcon = new ImageIcon(appIconUrl);
         setIconImage(appIcon.getImage());
         
-        makeMenus();
+        //makeMenus();
 
         JPanel content = new JPanel();
         content.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -182,7 +199,7 @@ public class WorldFrame<T> extends JFrame
         Grid<T> gr = world.getGrid();
         gridClasses.add(gr.getClass());
 
-        makeNewGridMenu();
+        //makeNewGridMenu();
 
         control = new GUIController<T>(this, display, displayMap, resources);
         content.add(control.controlPanel(), BorderLayout.SOUTH);
@@ -283,6 +300,7 @@ public class WorldFrame<T> extends JFrame
 
     // Creates the drop-down menus on the frame.
 
+    /**
     private JMenu makeMenu(String resource)
     {
         JMenu menu = new JMenu();
@@ -465,21 +483,26 @@ public class WorldFrame<T> extends JFrame
         MenuMaker<T> maker = new MenuMaker<T>(this, resources, displayMap);
         maker.addConstructors(newGridMenu, gridClasses);
     }
+    */
 
     /**
      * Sets the enabled status of those menu items that are disabled when
      * running.
      * @param enable true to enable the menus
      */
+    /**
     public void setRunMenuItemsEnabled(boolean enable)
     {
         for (JMenuItem item : menuItemsDisabledDuringRun)
             item.setEnabled(enable);
     }
+    */
+    
 
     /**
      * Brings up a simple dialog with some general information.
      */
+    /**
     private void showAboutPanel()
     {
         String html = MessageFormat.format(resources
@@ -505,11 +528,13 @@ public class WorldFrame<T> extends JFrame
                 .getString("dialog.about.title"),
                 JOptionPane.INFORMATION_MESSAGE);
     }
+    */
 
     /**
      * Brings up a window with a scrolling text pane that display the help
      * information.
      */
+    /**
     private void showHelp()
     {
         JDialog dialog = new JDialog(this, resources
@@ -547,10 +572,12 @@ public class WorldFrame<T> extends JFrame
         dialog.pack();
         dialog.setVisible(true);
     }
+    /*
 
     /**
      * Brings up a dialog that displays the license.
      */
+    /**
     private void showLicense()
     {
         JDialog dialog = new JDialog(this, resources
@@ -574,6 +601,7 @@ public class WorldFrame<T> extends JFrame
         dialog.pack();
         dialog.setVisible(true);
     }
+    */
 
     /**
      * Nested class that is registered as the handler for exceptions on the
